@@ -1,0 +1,200 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --radius: 18px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+a { color: inherit; text-decoration: none; }
+
+.leaflet-container {
+  width: 100%;
+  height: 320px;
+  border-radius: 16px;
+}
+
+/* Promo circle animation styles */
+.promo-circle {
+  width: 8.5rem;
+  height: 8.5rem;
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.09);
+  border: 4px solid rgba(209, 72, 178, 0.95); /* stronger magenta ring */
+  background: white;
+}
+
+.promo-circle img {
+  position: absolute;
+  /* inset a little so the image doesn't touch the border and remains circular */
+  inset: 4px;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  object-fit: contain; /* ensure the whole image is visible when at max zoom */
+  transform: scale(0.92);
+  opacity: 0;
+  transition: transform 3s cubic-bezier(.2,.9,.3,1), opacity 1s ease;
+  will-change: transform, opacity;
+}
+
+.promo-circle img.active {
+  /* animate to full-fit within the circle (no cropping) */
+  transform: scale(1);
+  opacity: 1;
+  z-index: 2;
+}
+
+.promo-circle img:not(.active) {
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .promo-circle { width: 12rem; height: 12rem; }
+}
+
+/* ensure absolute wrapper doesn't affect layout */
+.promo-card-wrap { pointer-events: none; }
+.promo-card-wrap input { pointer-events: auto; }
+
+/* Ensure the promo sits to the right of the grid and floats above content */
+.promo-card-wrap { width: 100%; display:flex; align-items:center; justify-content:flex-end; position: absolute; z-index: 60; }
+.promo-card-wrap .promo-circle { z-index: 61; box-shadow: 0 14px 40px rgba(0,0,0,0.12); }
+
+/* Footer social card styles (scoped) */
+.footer-social .card {
+  display: flex;
+  height: 70px;
+  width: 270px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  position: relative;
+}
+
+.footer-social .card svg {
+  position: static;
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  font-size: 24px;
+  font-weight: 700;
+  opacity: 1;
+  transition: transform 0.18s ease, opacity 0.18s;
+  z-index: 2;
+  cursor: default;
+  fill: #fff;
+}
+
+.footer-social .card .social-link1,.footer-social .card .social-link2,.footer-social .card .social-link3,.footer-social .card .social-link4 {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 4px;
+  color: whitesmoke;
+  text-decoration: none;
+  transition: transform 0.18s ease, background-color 0.18s ease;
+  border-radius: 50px;
+}
+
+.footer-social .card svg { transform: scale(1); }
+
+.footer-social .card .social-link1:hover { background-color: #1a1e22; transform: scale(1.06); }
+.footer-social .card .social-link2:hover { background-color: #0a66c2; transform: scale(1.06); }
+.footer-social .card .social-link3:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  transform: scale(1.06);
+}
+.footer-social .card .social-link3:hover svg {
+  animation: bounce_613 0.4s linear;
+}
+.footer-social .card .social-link4:hover { background-color: #1d4292; transform: scale(1.06); }
+
+@keyframes bounce_613 {
+  40% { transform: scale(1.4); }
+  60% { transform: scale(0.8); }
+  80% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Decorative promo SVG styles (scoped) */
+.promo-deco .container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+.promo-deco .container {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+.promo-deco .container svg {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 50px;
+  transition: all 0.3s;
+  fill: #ffeb49;
+  filter: drop-shadow(0 0 8px #ffeb49) drop-shadow(0 0 16px #ffd700) drop-shadow(0 0 24px #ffa500);
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    filter: drop-shadow(0 0 8px #ffeb49) drop-shadow(0 0 16px #ffd700) drop-shadow(0 0 24px #ffa500);
+  }
+  to {
+    filter: drop-shadow(0 0 12px #ffeb49) drop-shadow(0 0 24px #ffd700) drop-shadow(0 0 36px #ffa500);
+  }
+}
+
+.promo-deco .container svg:hover {
+  transform: scale(1.1);
+}
+.promo-deco .container input:checked ~ svg {
+  fill: #ffeb49;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+/* positioning for left/right deco relative to promo circle */
+.promo-card-wrap .promo-deco-left { margin-right: 12px; }
+.promo-card-wrap .promo-deco-right { margin-left: 12px; }
+.promo-card-wrap .promo-deco-left, .promo-card-wrap .promo-deco-right {
+  z-index: 62;
+  display: flex;
+  align-items: center;
+}
+
+/* small right-shift for promo block to nudge it further right as a whole */
+.promo-card-wrap.shift-right {
+  right: 2.25rem; /* override utility right-20 (5rem) to move closer to viewport edge */
+}
+
+.promo-deco .star {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.25rem;
+  line-height: 1;
+  color: #d14ab2; /* magenta-ish */
+  text-shadow: 0 2px 6px rgba(0,0,0,0.18);
+  filter: drop-shadow(0 6px 12px rgba(209,74,178,0.18));
+}
+
+.promo-deco .star:hover { transform: scale(1.12); }
+
