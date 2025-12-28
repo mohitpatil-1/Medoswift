@@ -1,0 +1,14 @@
+{
+  "name": "medoswift",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "dev": "concurrently -n SERVER,CLIENT -c green,cyan \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "start": "concurrently -n SERVER,CLIENT -c green,cyan \"npm --prefix server start\" \"npm --prefix client start\"",
+    "seed": "npm --prefix server run seed"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
